@@ -2,5 +2,5 @@ Made new file
 
 Added second line to firsttfile.txt
 
-Went back in tiime to the last working version of my file
+Went back in time to the last working version of my file
 
