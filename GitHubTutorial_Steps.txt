@@ -141,6 +141,7 @@ git checkout main
 #incorporated in the main branch
 git merge NewMethod
 
-#And then delete the branch
+#And then delete the branch (NOTE: I haven't perfrmed this step, in order to keep the branch available in my repo
+#for someone following along the tutorial)
 git branch -d NewMethod
 
