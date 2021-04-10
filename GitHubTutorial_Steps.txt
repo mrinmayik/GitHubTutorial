@@ -1,0 +1,146 @@
+#Make an account on GitHub.com
+#Make a new repository
+
+#Clone this repository to your local machine (Note: Your link will be different from the one below)
+git clone https://github.com/mrinmayik/GitHubTutorial.git (SLIDE 5)
+#Go into this folder
+cd GitHubTutorial
+
+##################################################################
+#MAKING AND COMMITTING CHANGES (SLIDE 6)
+
+#Make a new file in this folder. For demonstration we'll start with a simple
+#text file with one line
+echo "Made new file" >> firstfile.txt
+#Open up this file in a text editor so that you can make and save changes to it
+open firstfile.txt
+
+#git status is a great command to keep track of the status of changes in the repo
+#git status also gives you helpful tips on how to proceed
+#firstfile.txt is currently untracked by git
+git status
+
+#Add this file to the "staging area"
+git add firstfile.txt
+#firstfile.txt is now added to the staging area
+git status
+
+
+#Commit this change with a commit message. The text in quotes after the -m flag
+#is saved as a note with the commit to summarise the changes you're committing
+git commit -m "Made first file"
+#Changes in firstfile.txt are now committed
+git status
+
+
+#Make and save changes in file, and save the files
+#Add changes to the staging area
+git add firstfile.txt
+#Commit changes
+git commit -m "Added 2nd line"
+#See history of commits
+git log --oneline
+
+#Push changes to remote (origin). Now if you refresh your repository on GitHub.com
+#your commit messages should show up
+git push
+
+##################################################################
+#REVERTING CHANGES (SLIDE 7)
+
+#Changes to files at different stages of the commit process can be reverted
+
+############ Revert changes that have not been added or committed
+#Make and save changes in file
+#Undo unadded+uncommitted changes
+git checkout firstfile.txt
+
+############ Revert changes that have been added but not committed
+#Make and save changes in file
+#Add changes to the staging area
+git add firstfile.txt
+#Undo added+uncommitted changes
+git reset HEAD firstfile.txt
+git checkout firstfile.txt
+
+############ Revert changes that have been added AND committed
+#Make and save changes in file
+#Commit changes
+git add firstfile.txt
+git commit -m "Added change that will be undone"
+#Undo added+committed changes
+git reset --soft HEAD~1 #Revert the commit but keep the changes
+git reset HEAD firstfile.txt
+git checkout firstfile.txt
+
+##################################################################
+#DEBUGGING WITH GIT
+
+############ Look at line-by-line changes (SLIDE 10)
+#You can look at the line-by-line uncommitted changes in your files using the diff command
+#Lines that were deleted are marked with a - sign, and those that were added are marked with +
+#Make and save changes in file
+#Check differences
+git diff firstfile.txt
+
+############ Going back in time (SLIDE 11)
+#Another effective debugging tip is going back in time to a previous version that worked
+#and making smaller changes
+#Make, save and commit change
+#You can add the -a flag to perform the add and commit steps in one go
+git commit -a -m "Added a change that generated an error"
+
+#Look at log of commits
+git log --oneline
+
+#To go back to a previous commit, select the alpha-numeric code of the commit (called the hash key)
+git checkout e3c8a2a #NOTE: the precise hash key will have to be got from your own log
+
+#The following message will be printed out. This is normal!!:
+"You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+HEAD is now at e3c8a2a Added a line that generated an error"
+
+#Now you can make changes and commits to this "from-the-past" version of this file, until the error is fixed.
+#If you don't want to keep these changes you made to the "from-the-past" version, then you can just discard the 
+#changes and go back to the present version
+git checkout main
+
+#But if you want to keep the changes, you have to make a "branch" that will save these experimental commits
+git branch experimental-changes
+#Then just combine this branch onto the main branch
+git merge experimental-changes
+#And delete the experimental-changes branches
+git branch -d experimental-changes
+#Push these changes to GitHub.com
+git push
+
+
+
+############ Making branches (SLIDE 12)
+
+#Make a new branch
+git branch NewMethod
+#Switch over to new branch
+git checkout NewMethod
+
+#Make changes
+git commit -a -m "Added line in NewMethod branch"
+#Switch back to main branch; and look at the textfile-the last line change will not be present
+#because the change was made in the alternate universe of "NewMethod"
+git checkout main
+
+#Merge the NewMethod branch onto the main branch, so all changes in the alternate branch will be
+#incorporated in the main branch
+git merge NewMethod
+
+#And then delete the branch
+git branch -d NewMethod
+
